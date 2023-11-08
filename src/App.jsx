@@ -9,7 +9,7 @@ import NavbarMenu from "./components/Navbar/Navbar"
 import ItemListContainer from "./components/ItemListContainer/ItemListContainer"
 import Error from './components/Error/Error'
 import ItemDetailContainer from './components/ItemDetailContainer/ItemDetailContainer'
-import ContactUs from "./components/ContactUs/Contactus";
+import ContactUs from "./components/ContactUs/ContactUs";
 import Gifs from "./components/Gifs/Gifs";
 
 //Imports de hooks

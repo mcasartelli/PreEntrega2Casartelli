@@ -9,7 +9,7 @@ import './cartItem.css'
 import { CartContext } from '../../context/CartContext';
 
 const CartItem = ({product, checkOut}) => {
-    const {removeItem} = useContext(CartContext)
+    const {removeItem, incrementProduct, decrementProduct} = useContext(CartContext)
     let USDollar = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
@@ -20,23 +20,41 @@ const CartItem = ({product, checkOut}) => {
             <Col md={1}>
                 <Image className='cartItemImg' src={product.image} roundedCircle />
             </Col>
-            <Col md={5}>
+            <Col md={4}>
                 <p>{product.title}</p>
             </Col>
             <Col  md={1}>
-                <p>{product.cant}</p>
+                <div className="counterDiv">
+                    {
+                        !checkOut &&
+                        (
+                            <Button className='counter' variant="secondary" size="sm" onClick={()=>decrementProduct(product.id)}>-</Button>
+                        )
+                    }
+                    
+                    <p className='counter cant'>{product.cant}</p>
+
+                    {
+                        !checkOut &&
+                        (
+                            <Button className='counter' variant="secondary" size="sm" onClick={()=>incrementProduct(product.id)}>+</Button>
+                        )
+                    }     
+                </div> 
             </Col>
-            <Col md={2}>
+            <Col md={2} style={{textAlign: 'right'}}>
+            <p>{USDollar.format(product.price)}</p>
+            </Col>
+            <Col md={2} style={{textAlign: 'right'}}>
             <p>{USDollar.format(product.cant * product.price)}</p>
             </Col>
             {!checkOut&&
                 <>
-                <Col md={3}>
+                <Col md={2}>
                     <Button variant="secondary" onClick={()=>removeItem(product.id)}>Delete item</Button>
                 </Col>
                 </>
-            }
-            
+            }            
         </Row>
             
         </>

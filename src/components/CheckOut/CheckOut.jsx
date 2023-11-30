@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import {collection, addDoc, updateDoc, getDoc, getFirestore, doc} from 'firebase/firestore'
 import { CartContext } from '../../context/CartContext';
 
@@ -9,12 +9,17 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Cart from '../Cart/Cart';
+import {Link} from 'react-router-dom';
+
+import Loading from '../Loading/Loading'
 
 import './checkOut.css'
 
 const CheckOut = ({checkOut}) => {
     const [orderId, setOrderId] = useState('')
     const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [finished, setFinished] = useState(false)
 
     const { 
         register,
@@ -26,7 +31,7 @@ const CheckOut = ({checkOut}) => {
     const {cart, getTotalAmount, clearCart} = useContext(CartContext)
 
     const onSubmit = (data) => {
-        
+        setLoading(true)
         const db = getFirestore()
         const order = {
             buyer: data,
@@ -54,9 +59,9 @@ const CheckOut = ({checkOut}) => {
             
             addDoc(collection(db, 'orders'), order)
             .then((docRef) => {
-                //console.log(docRef)
                 setOrderId(docRef.id)
                 clearCart()
+                setFinished(true)
             })
             .catch(()=>{
                 setError('Error sending the order')
@@ -65,16 +70,21 @@ const CheckOut = ({checkOut}) => {
         .catch(() => {
             setError('Can not update stock, try again')
         })
+        .finally(()=> setLoading(false))
 
     }
 
 
     return (
         <>
+        {loading && <Loading/>}
         <Container>
-        <Row>
-            <Col><h2>Check Out</h2></Col>
-        </Row>
+            <Row>
+                <Col><h2>Check Out</h2></Col>
+            </Row>
+
+            {!finished  &&
+            <>
             <Row>
                 <Col>
                     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -86,7 +96,7 @@ const CheckOut = ({checkOut}) => {
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="lastName">
                             <Form.Label>Last Name</Form.Label>
-                            <Form.Control type="text" placeholder="Last Name" {...register("lastName", { required: true })} />
+                            <Form.Control type="text" placeholder="Last Name" {...register("lastName", { required: true, maxLength: 20  })} />
                             {errors.lastName && <span>This field is required</span>}
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="email">
@@ -106,8 +116,13 @@ const CheckOut = ({checkOut}) => {
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="phone">
                             <Form.Label>Phone</Form.Label>
-                            <Form.Control type="text" placeholder="+54 9 ..." {...register("phone", { required: true, maxLength: 20 })} />
-                            {errors.lastName && <span>This field is required</span>}
+                            <Form.Control type="text" placeholder="54 9 ..." {...register("phone", 
+                            { 
+                                required: true, 
+                                maxLength: 20,
+                                pattern: /^[0-9]+$/i
+                            })} />
+                            {errors.phone && <span>This field is required and allow only numbers</span>}
                         </Form.Group>
                         <Button type="submit">Order Now</Button>
                     </Form>
@@ -117,13 +132,16 @@ const CheckOut = ({checkOut}) => {
                     <Cart checkOut={checkOut}/>
                 </Col>
             </Row>
-            
+            </>
+            }
+
             {orderId && (
                 <>
                 <Row>
                     <Col>
                         <h2>Thank you for your purchase!</h2>
                         <p> Your order number is: <b>{orderId}</b></p>
+                        <Button as={Link} to={'/'}>Go home</Button>
                     </Col>
                 </Row>
                 </>

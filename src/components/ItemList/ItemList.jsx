@@ -42,24 +42,6 @@ const ItemList = () => {
     },[id])
     
 
-    /////// alternativa con promesas
-    // useEffect( () => {
-    //     setLoading(true)
-    //     fetch(id==null ? "https://fakestoreapi.com/products" : `https://fakestoreapi.com/products/category/${id}`)
-    //     .then(res => res.json())
-    //     .then(json => setProducts(json))
-    //     .catch((error) =>{
-    //         alert(error)
-    //     })
-    //     .finally(()=>setLoading(false))
-    // }, [id]
-    // )
-
-    // //Agregar stock a los objetos del array Sacar con Firebase
-    // products.forEach((prod) =>
-    // prod['stock'] = Math.floor(Math.random() * 10)
-    // )
-    
     return (
         <>
             <Container>

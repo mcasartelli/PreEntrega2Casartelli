@@ -1,3 +1,11 @@
 .cartItemImg{
     width: 40px;
 }
+
+.counter{
+    display: inline;
+}
+
+p.counter.cant {
+    margin: 0 10px 0 10px;
+}

@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 
 const Cart = ({checkOut}) => {
     const {cart} = useContext(CartContext)
@@ -20,7 +22,30 @@ const Cart = ({checkOut}) => {
         <div>
             <h1>Cart</h1>
             <Container>
+            <Row>
+            <Col md={1}>
                 
+            </Col>
+            <Col md={4}>
+                <p><b>Product</b></p>
+            </Col>
+            <Col  md={1} style={{textAlign: 'center'}}>
+                <p><b>#</b></p>               
+            </Col>
+            <Col md={2} style={{textAlign: 'right'}}>
+                <p><b>Price</b></p>  
+            </Col>
+            <Col md={2} style={{textAlign: 'right'}}>
+                <p><b>Total</b></p>  
+            </Col>
+            {!checkOut&&
+                <>
+                <Col md={2}>
+                    
+                </Col>
+                </>
+            }            
+        </Row>
                 {
                 cart.length > 0 ?
                 
@@ -38,7 +63,10 @@ const Cart = ({checkOut}) => {
                     <>
                     <Button variant="danger" onClick={()=>clearCart()}>Clear Cart</Button>
                     <Button as={Link} to='/'>Check other products</Button>
-                    <Button as={Link} to='/CheckOut'>Check Out</Button>
+                    {
+                        cart.length > 0 && <Button as={Link} to='/CheckOut'>Check Out</Button>
+                    }
+                    
                     </>
                 }
                 

@@ -10,7 +10,6 @@ const ItemDetail = ({product}) => {
     //Carrito de compras
     const [quantity, setQuantity] = useState(0)
     const {addToCart} = useContext(CartContext)
-    const {isInCart} = useContext(CartContext)
 
 
     let onAdd = (cant) => {
@@ -40,7 +39,7 @@ const ItemDetail = ({product}) => {
                             :
                             <p>Sin Stock</p>
                         :
-                        <Button as={Link}  to={'/Cart'}>Ir al Carrito</Button>
+                        <Button as={Link}  to={'/Cart'}>View cart</Button>
                     }
                 </Card.Body>
             </Card>

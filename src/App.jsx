@@ -51,8 +51,6 @@ function App() {
     }
   ]
 
-  
-
   const greeting = "Wellcome to eStore"
 
   return (

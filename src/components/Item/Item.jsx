@@ -37,14 +37,15 @@ const Item = ({product}) => {
                     <Card.Text>
                     {truncate(product.description, 100)}
                     </Card.Text>
+                    <Button  variant="secondary" as={Link} to={`/item/${product.id}`}>View more details</Button>
                     <p>{USDollar.format(product.price)} - Stock: {product.stock}</p>
                     {
                         quantity == 0  ?
                             product.stock!=0 ? 
                             <ItemCount init={1} stock={product.stock} onAdd={onAdd}/> :
-                            <p>Sin Stock</p>
+                            <p>No Stock</p>
                         :
-                        <Button as={Link} to={'/cart'}>Ir al carrito</Button>
+                        <Button as={Link} to={'/cart'}>View cart</Button>
                         
                     }
                     

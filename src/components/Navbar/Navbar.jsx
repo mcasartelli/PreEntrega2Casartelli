@@ -27,23 +27,24 @@ const NavbarMenu = ({links}) => {
     },[])
         const listItems = categories!=null && 
             links.map((link, key) => 
+            
                link.name!='Categories' ?
-                    <Nav.Link key={key} as={NavLink} to={link.link} title={link.title}>{link.name}</Nav.Link>
+                    (<Nav.Link key={key} as={NavLink} to={link.link} title={link.title}>{link.name}</Nav.Link>)
                 :
-                    <>
-                    {
+                (
+                    <NavDropdown key={key} title={link.name} id="basic-nav-dropdown">
+                        {
                         loading ?
-                        <Loading/>
+                        (<Loading/>)
                         :
-                        <NavDropdown key={key} title={link.name} id="basic-nav-dropdown">
-                            {
-                            categories.map((category, key1) =>
+                            (
+                                categories.map((category, key1) =>
                                 <NavDropdown.Item key={key1} as={NavLink} to={`/category/${category}`}>{category}</NavDropdown.Item>
                             )
-                            }
-                        </NavDropdown>
-                    }
-                    </>
+                            )     
+                        }
+                    </NavDropdown>
+                )
             )
 
     return(

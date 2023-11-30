@@ -20,6 +20,34 @@ export const CartProvider = ({children}) => {
         }
     }
 
+    const incrementProduct = (id) => {
+        if(isInCart) {
+            const newCart = cart.map(prod =>{
+                if(prod.id === id && prod.stock > prod.cant){
+                    return {...prod, cant: prod.cant + 1}
+                }
+                else{
+                    return prod
+                }
+            })
+            setCart(newCart)
+        }
+    }
+
+    const decrementProduct = (id) => {
+        if(isInCart) {
+            const newCart = cart.map(prod =>{
+                if(prod.id === id && prod.cant > 1){
+                    return {...prod, cant: prod.cant - 1}
+                }
+                else{
+                    return prod
+                }
+            })
+            setCart(newCart)
+        }
+    }
+
     const isInCart = (itemId) => {
         if(cart.length > 0){
             return cart.some((i) => i.id === itemId)
@@ -60,7 +88,9 @@ export const CartProvider = ({children}) => {
                 clearCart,
                 cart,
                 setCart,
-                getTotalAmount
+                getTotalAmount,
+                incrementProduct,
+                decrementProduct
             }
         }>
         {children}

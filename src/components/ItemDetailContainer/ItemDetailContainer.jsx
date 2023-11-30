@@ -36,25 +36,6 @@ const ItemDetailContainer = ({onAdd}) => {
 
     },[id])
 
-    /////// alternativa con promesas
-    // useEffect( () => {
-    //     setLoading(true)
-    //     fetch(`https://fakestoreapi.com/products/${id}`)
-    //     .then(res => res.json())
-    //     .then(json => setProduct(json))
-    //     .catch((error) =>{
-    //       alert(error)
-    //     })
-    //     .finally(()=>setLoading(false))
-    //   }, [id]
-    //   )
-      
-    //   //Sacar cuando usemos Firebase
-    //   if(product!==null){
-    //     product['stock'] = Math.floor(Math.random() * 10)
-    //   }
-          
-
     return (
         <>
             {loading ? 

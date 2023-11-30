@@ -61,10 +61,14 @@ const Cart = ({checkOut}) => {
                     
                 !checkOut &&
                     <>
-                    <Button variant="danger" onClick={()=>clearCart()}>Clear Cart</Button>
+                    
                     <Button as={Link} to='/'>Check other products</Button>
                     {
-                        cart.length > 0 && <Button as={Link} to='/CheckOut'>Check Out</Button>
+                        cart.length > 0 && 
+                        <>
+                            <Button variant="danger" onClick={()=>clearCart()}>Clear Cart</Button>
+                            <Button as={Link} to='/CheckOut'>Check Out</Button>
+                        </>
                     }
                     
                     </>

@@ -1,15 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import ItemCount from '../ItemCount/ItemCount';
 import { CartContext } from '../../context/CartContext';
-import { useState } from 'react';
 import Card from 'react-bootstrap/Card';
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import { Button } from 'react-bootstrap';
 
 const ItemDetail = ({product}) => {
     //Carrito de compras
     const [quantity, setQuantity] = useState(0)
     const {addToCart} = useContext(CartContext)
+    const navigate = useNavigate();
 
 
     let onAdd = (cant) => {
@@ -43,6 +43,7 @@ const ItemDetail = ({product}) => {
                     }
                 </Card.Body>
             </Card>
+            <Button onClick={()=> navigate(-1)}>Go back</Button>
         </>
     );
 };

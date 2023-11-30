@@ -32,6 +32,7 @@ const CheckOut = ({checkOut}) => {
 
     const onSubmit = (data) => {
         setLoading(true)
+        setFinished(true)
         const db = getFirestore()
         const order = {
             buyer: data,
@@ -61,14 +62,15 @@ const CheckOut = ({checkOut}) => {
             .then((docRef) => {
                 setOrderId(docRef.id)
                 clearCart()
-                setFinished(true)
             })
             .catch(()=>{
                 setError('Error sending the order')
+                setFinished(false)
             })
         })
         .catch(() => {
             setError('Can not update stock, try again')
+            setFinished(false)
         })
         .finally(()=> setLoading(false))
 

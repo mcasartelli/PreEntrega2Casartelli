@@ -1,13 +1,27 @@
-import React from 'react';
-
+import React, { useContext } from 'react';
 import ItemCount from '../ItemCount/ItemCount';
-
+import { CartContext } from '../../context/CartContext';
 import { useState } from 'react';
-
 import Card from 'react-bootstrap/Card';
+import {Link} from 'react-router-dom'
+import { Button } from 'react-bootstrap';
 
-const ItemDetail = ({product, onAdd}) => {
-    
+const ItemDetail = ({product}) => {
+    //Carrito de compras
+    const [quantity, setQuantity] = useState(0)
+    const {addToCart} = useContext(CartContext)
+    const {isInCart} = useContext(CartContext)
+
+
+    let onAdd = (cant) => {
+        addToCart(product, cant)
+        setQuantity(cant)
+    }
+
+    let USDollar = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    });
     
     return (
         <>
@@ -18,11 +32,15 @@ const ItemDetail = ({product, onAdd}) => {
                     <Card.Text>
                     {product.description}
                     </Card.Text>
-                    <p>$ {product.price} - Stock: {product.stock}</p>
+                    <p>{USDollar.format(product.price)} - Stock: {product.stock}</p>
                     {
-                        product.stock!=0 ? 
-                        <ItemCount product={product} onAdd={onAdd}/> :
-                        <p>Sin Stock</p>
+                        quantity == 0 ?
+                            product.stock!=0 ? 
+                            <ItemCount init={1} stock={product.stock} onAdd={onAdd}/> 
+                            :
+                            <p>Sin Stock</p>
+                        :
+                        <Button as={Link}  to={'/Cart'}>Ir al Carrito</Button>
                     }
                 </Card.Body>
             </Card>

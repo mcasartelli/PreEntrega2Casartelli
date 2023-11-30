@@ -7,30 +7,57 @@ import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
 import Col from 'react-bootstrap/esm/Col';
 
+//Imports de Firebase
+import {getFirestore, getDoc, doc} from 'firebase/firestore'
+
 
 const ItemDetailContainer = ({onAdd}) => {
     const [product, setProduct] = useState(null)
     const {id} = useParams(null)
+    const [loading, setLoading] = useState(true)
 
-    useEffect( () => {
-        fetch(`https://fakestoreapi.com/products/${id}`)
-        .then(res => res.json())
-        .then(json => setProduct(json))
-        .catch((error) =>{
-          alert(error)
+    useEffect(()=>{
+        const db = getFirestore()
+
+        const prod = doc(db, 'products', id)
+
+        getDoc(prod)
+        .then(res =>{
+            const data = res.data()
+            const newProd = {id: res.id, ...data}
+            setProduct(newProd)
+        })        
+        .catch((error)=>{
+            console.log(error)
         })
-      }, [id]
-      )
+        .finally(()=>{
+            setLoading(false)
+        })
+
+    },[id])
+
+    /////// alternativa con promesas
+    // useEffect( () => {
+    //     setLoading(true)
+    //     fetch(`https://fakestoreapi.com/products/${id}`)
+    //     .then(res => res.json())
+    //     .then(json => setProduct(json))
+    //     .catch((error) =>{
+    //       alert(error)
+    //     })
+    //     .finally(()=>setLoading(false))
+    //   }, [id]
+    //   )
       
-      //Sacar cuando usemos Firebase
-      if(product!==null){
-        product['stock'] = Math.floor(Math.random() * 10)
-      }
+    //   //Sacar cuando usemos Firebase
+    //   if(product!==null){
+    //     product['stock'] = Math.floor(Math.random() * 10)
+    //   }
           
 
     return (
         <>
-            {product == null ? 
+            {loading ? 
             <Loading/> : 
             <div className='productsContainer'>
                 <Container>

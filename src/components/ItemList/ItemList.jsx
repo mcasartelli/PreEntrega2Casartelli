@@ -6,26 +6,59 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useParams } from 'react-router-dom';
 
-const ItemList = ({onAdd, setProductId}) => {
+//Imports de Firebase
+import {getFirestore, collection, getDocs, query, where} from 'firebase/firestore'
+
+const ItemList = () => {
     //Productos
     const [products, setProducts] = useState([])
     const {id} = useParams(null)
-  
-    useEffect( () => {
-      fetch(id==null ? "https://fakestoreapi.com/products" : `https://fakestoreapi.com/products/category/${id}`)
-      .then(res => res.json())
-      .then(json => setProducts(json))
-      .catch((error) =>{
-        alert(error)
-      })
-    }, [id]
-    )
+    const [loading, setLoading] = useState(true)
+
+
+    useEffect(()=>{
+        const db = getFirestore()
+
+        const prod = id ?
+            query(
+                collection(db,'products'),
+                where('category', '==', id)
+            )
+            :
+            collection(db,'products')
+        
+        getDocs(prod).then((snapshot) => {
+            setProducts(snapshot.docs.map((doc)=>(
+                {id: doc.id, ...doc.data()}
+            )))
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
+        .finally(()=>{
+            setLoading(false)
+        })
+
+    },[id])
     
 
-    //Agregar stock a los objetos del array Sacar con Firebase
-    products.forEach((prod) =>
-    prod['stock'] = Math.floor(Math.random() * 10)
-    )
+    /////// alternativa con promesas
+    // useEffect( () => {
+    //     setLoading(true)
+    //     fetch(id==null ? "https://fakestoreapi.com/products" : `https://fakestoreapi.com/products/category/${id}`)
+    //     .then(res => res.json())
+    //     .then(json => setProducts(json))
+    //     .catch((error) =>{
+    //         alert(error)
+    //     })
+    //     .finally(()=>setLoading(false))
+    // }, [id]
+    // )
+
+    // //Agregar stock a los objetos del array Sacar con Firebase
+    // products.forEach((prod) =>
+    // prod['stock'] = Math.floor(Math.random() * 10)
+    // )
     
     return (
         <>
@@ -33,12 +66,12 @@ const ItemList = ({onAdd, setProductId}) => {
                 <Row>
                     
                     {
-                    products.length == 0 ? 
+                    loading ? 
                         <Loading/>
                     :
                         products.map((product, key) => 
                         <Col key={key}>
-                            <Item key={product.id} product={product} onAdd={onAdd} setProductId={setProductId}/>
+                            <Item key={product.id} product={product}/>
                         </Col>
                         
                         )

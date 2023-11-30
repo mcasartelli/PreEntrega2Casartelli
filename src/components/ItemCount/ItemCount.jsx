@@ -4,16 +4,16 @@ import Button from 'react-bootstrap/Button';
 
 import './itemCount.css'
 
-const ItemCount = ({product, onAdd}) => {
-    const [cant, setCant] = useState(1)
+const ItemCount = ({init = 1, stock, onAdd}) => {
+    const [cant, setCant] = useState(init)
 
     let incrementar = () => {
-        cant < product.stock && setCant(cant+1)
-        console.log(product.stock)
+        cant < stock && setCant(cant+1)
+        //console.log(stock)
     }
 
     let decrementar = () => {
-        cant > 1 && setCant(cant-1)
+        cant > init && setCant(cant-1)
     }
 
     let changeCart = () => {

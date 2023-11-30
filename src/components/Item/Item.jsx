@@ -1,21 +1,29 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import Card from 'react-bootstrap/Card';
 import {Link} from 'react-router-dom';
 import ItemCount from '../ItemCount/ItemCount';
+import { CartContext } from '../../context/CartContext';
+import { Button } from 'react-bootstrap';
 
 import './item.css'
 
-const Item = ({product, onAdd, setProductId}) => {
-    const [prodId, setProdId] = useState(product.id)
-    //setProdId(product.id)
+const Item = ({product}) => {
+    const [quantity, setQuantity] = useState(0)
+    const {addToCart} = useContext(CartContext)
+
     function truncate(str, n){
         return (str.length > n) ? str.slice(0, n-1) + '...' : str;
       }
       
-      let onclick = () => {
-        setProductId(prodId)
+      let onAdd = (cant) => {
+        addToCart(product, cant)
+        setQuantity(cant)
       }
 
+      let USDollar = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    });
     
     return (
         <>
@@ -29,11 +37,14 @@ const Item = ({product, onAdd, setProductId}) => {
                     <Card.Text>
                     {truncate(product.description, 100)}
                     </Card.Text>
-                    <p>$ {product.price} - Stock: {product.stock}</p>
+                    <p>{USDollar.format(product.price)} - Stock: {product.stock}</p>
                     {
-                        product.stock!=0 ? 
-                        <ItemCount product={product} onAdd={onAdd}/> :
-                        <p>Sin Stock</p>
+                        quantity == 0  ?
+                            product.stock!=0 ? 
+                            <ItemCount init={1} stock={product.stock} onAdd={onAdd}/> :
+                            <p>Sin Stock</p>
+                        :
+                        <Button as={Link} to={'/cart'}>Ir al carrito</Button>
                         
                     }
                     

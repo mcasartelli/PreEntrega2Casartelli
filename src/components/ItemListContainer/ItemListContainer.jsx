@@ -9,7 +9,7 @@ import Col from 'react-bootstrap/Col';
 import ItemList from "../ItemList/ItemList";
 
 
-const ItemListContainer = ({mensaje, onAdd, setProductId}) => {
+const ItemListContainer = ({mensaje}) => {
 
 
     return(
@@ -19,7 +19,7 @@ const ItemListContainer = ({mensaje, onAdd, setProductId}) => {
             <div className='productsContainer'>
                 <Container>
                     <Row>
-                        <ItemList onAdd={onAdd} setProductId={setProductId}/>
+                        <ItemList/>
                     </Row>
                 </Container>
             </div>

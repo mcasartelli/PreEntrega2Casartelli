@@ -24,9 +24,9 @@ Este es un proyecto de aplicación web de comercio electrónico desarrollado en 
 
 ## Instalación
 
-1. Clona este repositorio: `git clone https://github.com/tu-usuario/e-commerce-react.git`
+1. Clona este repositorio: `git clone https://github.com/mcasartelli/ProyectoFinalCasartelli.git`
 2. Instala las dependencias: `npm install`
-3. Inicia la aplicación: `npm start`
+3. Inicia la aplicación: `npm run dev`
 
 ## Configuración de Firebase
 

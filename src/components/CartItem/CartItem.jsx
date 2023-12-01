@@ -20,10 +20,10 @@ const CartItem = ({product, checkOut}) => {
             <Col md={1}>
                 <Image className='cartItemImg' src={product.image} roundedCircle />
             </Col>
-            <Col md={4}>
+            <Col md={5}>
                 <p>{product.title}</p>
             </Col>
-            <Col  md={1}>
+            <Col  md={2}>
                 <div className="counterDiv">
                     {
                         !checkOut &&
@@ -42,16 +42,16 @@ const CartItem = ({product, checkOut}) => {
                     }     
                 </div> 
             </Col>
-            <Col md={2} style={{textAlign: 'right'}}>
+            <Col md={1} style={{textAlign: 'right'}}>
             <p>{USDollar.format(product.price)}</p>
             </Col>
-            <Col md={2} style={{textAlign: 'right'}}>
+            <Col md={1} style={{textAlign: 'right'}}>
             <p>{USDollar.format(product.cant * product.price)}</p>
             </Col>
             {!checkOut&&
                 <>
                 <Col md={2}>
-                    <Button variant="secondary" onClick={()=>removeItem(product.id)}>Delete item</Button>
+                    <Button variant="secondary" size="sm" onClick={()=>removeItem(product.id)}>Delete item</Button>
                 </Col>
                 </>
             }            

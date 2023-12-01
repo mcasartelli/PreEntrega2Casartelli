@@ -34,7 +34,7 @@ const ItemDetailContainer = ({onAdd}) => {
             setLoading(false)
         })
 
-    },[id])
+    },[])
 
     return (
         <>
